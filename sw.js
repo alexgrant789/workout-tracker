@@ -1,4 +1,4 @@
-const CACHE = "workout-tracker-v3";
+const CACHE = "workout-tracker-v4";
 const BASE  = self.location.pathname.replace(/\/sw\.js$/, "");
 
 self.addEventListener("install", e => {
