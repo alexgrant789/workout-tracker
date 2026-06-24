@@ -1,8 +1,9 @@
-const CACHE = "workout-tracker-v2";
+const CACHE = "workout-tracker-v3";
+const BASE  = self.location.pathname.replace(/\/sw\.js$/, "");
 
 self.addEventListener("install", e => {
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(["/", "/index.html"]))
+    caches.open(CACHE).then(c => c.addAll([BASE + "/", BASE + "/index.html"]))
   );
   self.skipWaiting();
 });
@@ -21,13 +22,14 @@ self.addEventListener("fetch", e => {
 
   // Navigation requests → network first so index.html always reflects latest deploy
   if (e.request.mode === "navigate") {
+    const indexUrl = BASE + "/index.html";
     e.respondWith(
-      fetch("/index.html")
+      fetch(indexUrl)
         .then(res => {
-          caches.open(CACHE).then(c => c.put("/index.html", res.clone()));
+          caches.open(CACHE).then(c => c.put(indexUrl, res.clone()));
           return res;
         })
-        .catch(() => caches.match("/index.html"))
+        .catch(() => caches.match(indexUrl))
     );
     return;
   }
